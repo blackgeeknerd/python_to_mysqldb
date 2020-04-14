@@ -38,4 +38,5 @@ def connect_fetch():
             conn.close()
             print('database shutdown')
 
+#call the function we just created
 connect_fetch()

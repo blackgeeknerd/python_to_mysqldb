@@ -2,7 +2,7 @@
 Connect to mysql database, using python to perform the CRUD operations
 
 
-#requirments
+#requirements
 -ensure you have pip installed
 -ensure you have mysql.connector package installed
   to install mysql.connector

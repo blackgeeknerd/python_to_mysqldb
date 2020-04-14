@@ -45,6 +45,6 @@ def connect_insert():
             conn.close
             print('Disconnected from database')
 
-
+#call the function we just created
 connect_insert()
 

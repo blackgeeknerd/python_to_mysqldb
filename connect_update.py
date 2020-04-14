@@ -4,7 +4,7 @@ from mysql.connector import Error
 #1 - Connect and update a row, hard-coded values
 def connect_update():
     ''' function to connect and update a row in a database  '''
-    
+
     conn = None
 
     try:
@@ -55,5 +55,5 @@ def connect_update():
             conn.close
             print('Disconnected from database')
 
-
+#call the function we just created
 connect_update()
