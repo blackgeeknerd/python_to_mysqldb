@@ -1,59 +1,52 @@
 import mysql.connector as mysql
-from mysql.connector import Error
+from mysql.connector import Error 
+import getpass
+# import stdiomask
 
-#1 - Connect and update a row, hard-coded values
+
+
 def connect_update():
     ''' function to connect and update a row in a database  '''
-
-    conn = None
-
-    try:
-        #connect to the database using the connect function in line 12
-        conn = mysql.connect(host='localhost', 
-        #remember database should be the database you accessing
-        database='demo1', 
-        # the user should be the user in your mysql workbench      
-        user='seyi', 
-        #the password should be the password to the user in line 15        
-        password='password',    
-        auth_plugin='mysql_native_password')
-        #display connecting message
-        print('Connecting to database')
-
-        if conn.is_connected:
-            print('Connected to the database')
-            db_cursor = conn.cursor()
-
-            #Check dataset before updating a row
-
-            print("Before Updating a record")
-            #Create a query variable to select the row we want to update
-            sql_query = 'select * from human where humanId = 1006' #remember the id 1006 must exist before we can update it
-
-            #execute query using the execute function
-            db_cursor.execute(sql_query)
-
-            #create a variable to fetch a record from the executed query in line 31
-            record = db_cursor.fetchone()
-            print(record)
-
-            #Now we can proceed to updating the row
-            #Create a query variable
-            sql_query_update = "update human set Sex = 'Female' where humanId = 1006"
-            #execute the query variable we created in line 36 by using the execute function in line 38
-            db_cursor.execute(sql_query_update)
-
-            #commit the executed query into the database
-            conn.commit()
-            #display a success message
-            print('record Updated Successfully')
-
-    except Error as e:
-        print('Connection failed due to the following :', e)
+    
+    connection = None
+    num = 0
+        
+    #connection parameters
+    host = input('Enter Host for database')
+    database = input('Enter database name')
+    user = input('Enter user for database') 
+    password = getpass.getpass("Enter password")
+    
+    try: 
+        connection = mysql.connect(host=host, database=database, user=user, password=password)
+        cursor = connection.cursor()
+        
+        numEntries = int(input('Enter number'))
+        
+        while num < numEntries:
+            #Table name
+            table_name = input("Enter the table you want to update")
+            #column to be changed
+            column_name_to_be_changed = input("Enter the column to update")
+            #New value for the column
+            column_name_newValue = input("Enter the new value")
+            #Id for the row
+            condition_value = input("Enter the value for the condition")
+            #Query
+            sql_update_query = "update {} set {} = %s where id = %s" .format(table_name, column_name_to_be_changed)
+            input_data = (column_name_newValue, condition_value)
+            #execute the query
+            cursor.execute(sql_update_query, input_data)
+            #save to the database
+            connection.commit()
+            num += 1
+            print("Record Update successfully")
+            print(sql_update_query)
+    except mysql.Error as e:
+        print("Failed to update record to database: {}" .format(e))
     finally:
-        if conn is not None and conn.is_connected:
-            conn.close
-            print('Disconnected from database')
-
-#call the function we just created
+        if connection.is_connected():
+            cursor.close()
+            print("Database tunnel closed")
+            
 connect_update()

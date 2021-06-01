@@ -1,5 +1,6 @@
-import mysql.connector
+import mysql.connector as mysql
 from mysql.connector import Error
+import getpass
 
 #define the connector function
 def connect_fetch():
@@ -8,8 +9,14 @@ def connect_fetch():
     #create a variable for the connector object
     conn = None 
 
-    try:
-        conn = mysql.connector.connect(host='localhost', database='demo1', user='seyi', password='password', auth_plugin='mysql_native_password')
+    #connection parameters
+    host = input('Enter Host for database')
+    database = input('Enter database name')
+    user = input('Enter user for database')
+    password = getpass.getpass("Enter password")
+    
+    try: 
+        conn = mysql.connect(host=host, database=database, user=user, password=password)
         print('Connecting to database server....!')
         if conn.is_connected:
             print('Connected to database server')

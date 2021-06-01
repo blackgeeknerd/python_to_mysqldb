@@ -1,14 +1,22 @@
-import mysql.connector
+import mysql.connector as mysql
 from mysql.connector import Error
+import getpass
 
 def connect_insert():
     ''' function to connect and insert a row in a database  '''
 
     #create a connection variable
     conn = None
-
+    
+    #connection parameters
+    host = input('Enter Host for database')
+    database = input('Enter database name')
+    user = input('Enter user for database')
+    password = getpass.getpass("Enter password")
+    
     try:
-        conn = mysql.connector.connect(host='localhost', database='demo1', user='seyi', password='password', auth_plugin='mysql_native_password')
+        conn = mysql.connect(host=host, database=database, user=user, password=password)
+        # conn = mysql.connector.connect(host='localhost', database='demo1', user='#', password='#', auth_plugin='mysql_native_password')
         print('Connecting to database')
         if conn.is_connected:
             print('Connected to the database')
